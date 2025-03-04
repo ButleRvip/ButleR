@@ -18,31 +18,26 @@
     <button onclick="selectService('Страхование')">Страхование</button>
 
     <script>
-        // Функция для отправки данных в Telegram
+        // Функция для отправки данных на сервер
         function selectService(service) {
-            const chat_id = "298339477";  // Ваш chat_id
-            const botToken = "8183312825:AAEqB8weBJqZFBtXX4rH3wsRjnd-ldz_H5E";  // Токен вашего бота
-
-            // Формирование сообщения
-            const message = `Вы выбрали услугу: ${service}`;
-
-            // Отправка сообщения в Telegram
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        alert("Сообщение отправлено!");
-                    } else {
-                        alert("Ошибка при отправке сообщения.");
-                    }
-                })
-                .catch(error => {
-                    alert("Ошибка связи с сервером.");
-                });
+            // Отправка данных на сервер Flask
+            fetch('/send-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ service: service })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'Message sent successfully!') {
+                    alert("Сообщение отправлено в Telegram!");
+                } else {
+                    alert("Ошибка при отправке сообщения.");
+                }
+            })
+            .catch(error => {
+                alert("Ошибка связи с сервером.");
+            });
         }
     </script>
 </body>
 </html>
-
-
-
