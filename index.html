@@ -18,11 +18,31 @@
     <button onclick="selectService('Страхование')">Страхование</button>
 
     <script>
+        // Функция для отправки данных в Telegram
         function selectService(service) {
-            // Отправка выбранной услуги обратно в Telegram через Telegram WebApp
-            Telegram.WebApp.sendData(service); // Отправляем выбранную услугу
-            alert("Вы выбрали услугу: " + service); // Подтверждение выбора услуги
+            const chat_id = "298339477";  // Ваш chat_id
+            const botToken = "8183312825:AAEqB8weBJqZFBtXX4rH3wsRjnd-ldz_H5E";  // Токен вашего бота
+
+            // Формирование сообщения
+            const message = `Вы выбрали услугу: ${service}`;
+
+            // Отправка сообщения в Telegram
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert("Сообщение отправлено!");
+                    } else {
+                        alert("Ошибка при отправке сообщения.");
+                    }
+                })
+                .catch(error => {
+                    alert("Ошибка связи с сервером.");
+                });
         }
     </script>
 </body>
 </html>
+
+
+
